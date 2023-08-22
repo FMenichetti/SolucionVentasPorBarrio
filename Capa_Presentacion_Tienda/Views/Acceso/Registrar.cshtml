@@ -1,0 +1,311 @@
+﻿@model CapaDominio.Usuario
+@{
+    <!--Layout = null;-->
+    ViewBag.Title = "Registrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Registrar</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Crear cuenta</h3></div>
+                                <div class="card-body" id="contenedor">
+                                    <form action="@Url.Action("Registrar_nuevo","Acceso")" method="post">
+                                        <!--Nombre y apellido-->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", @id = "txtNombre", value = ViewData["Nombre"] })
+                                                    @Html.Label("txtNombre", "Nombre")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control", @id = "txtApellido", value = ViewData["Apellido"] })
+                                                    @Html.Label("txtApellido", "Apellido")
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <!--email y provincia-->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "txtCorreo", value = ViewData["Correo"] })
+                                                    @Html.Label("txtCorreo", "Correo")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <select class="form-select form-select-sm" id="cboProvincia" name="provinciaId"></select>
+                                                    <label for="cboProvincia" class="form-label">Provincia: </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Direccion y ciudad-->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    @Html.TextBoxFor(m => m.Direccion, new { @class = "form-control", @id = "txtDireccion" })
+                                                    @Html.Label("txtDireccion", "Direccion")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+
+                                                    <select class="form-select form-select-sm" id="cboCiudad" name="ciudadId"></select>
+                                                    <label for="cboProvincia" class="form-label">Ciudad: </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Celular y barrio-->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    @Html.TextBoxFor(m => m.Celular, new { @class = "form-control", @id = "txtCelular" })
+                                                    @Html.Label("txtCelular", "Celular")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <select class="form-select form-select-sm" id="cboBarrio" name="barrioId"></select>
+                                                    <label for="cboProvincia" class="form-label">Barrio: </label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <!--Tienda -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    @Html.TextBoxFor(m => m.Tienda, new { @class = "form-control", @id = "txtTienda", value = ViewData["Tienda"] })
+                                                    @Html.Label("txtTienda", "Tienda")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+
+                                                </div>
+                                            </div>
+
+
+                                            @{
+                                                if (ViewBag.Error != null)
+                                                {
+                                                    <div class="row mb-3">
+                                                        <div class="alert alert-danger" role="alert">
+                                                            Usuario o contraseña incorrecta
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+
+
+                                            <div class="mt-4 mb-0">
+                                                <div class="d-grid"><button class="btn btn-primary btn-block" id="btnCrearCuenta" type="submit">Crear cuenta</button></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small"><a href="@Url.Action("Index","Acceso")">¿Ya tienes una cuenta? Iniciar sesion</a></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+</body>
+</html>
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            ListarProvincia();
+
+            overlay();
+
+
+        })
+
+
+     //LISTAR PROVINCIAS EN DESPLEGABLE
+        function ListarProvincia() {
+
+            $("<option>").attr({ "value": "00", "disabled":"disabled", "selected":"true" }).text("Seleccionar").appendTo("#cboProvincia")
+
+            jQuery.ajax({
+
+                        url: '@Url.Action("ObtenerProvincia", "Acceso")',
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+
+                        success: function (data) {
+
+                            if (data.lista != null) {
+                                $.each(data.lista, function (i, item) {
+
+                                    $("<option>").attr({ "value": item.IdProvincia }).text(item.Descripcion).appendTo("#cboProvincia")
+                                })
+                            }
+                            ListarCiudad();
+                        },
+
+            });
+        }
+
+        //Cambio de seleccion en el desplegable de provincia
+        $("#cboProvincia").on("change", function () {
+
+            ListarCiudad();
+
+        })
+
+
+        //LISTAR CIUDAD EN DESPLEGABLE
+        function ListarCiudad() {
+
+            $("#cboCiudad").html("");
+
+            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cboCiudad");
+
+            jQuery.ajax({
+
+                        url: '@Url.Action("ObtenerCiudad", "Acceso")',
+                        type: "POST",
+                        data: JSON.stringify({ idProvincia: $("#cboProvincia option:selected").val() }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+
+                        success: function (data) {
+
+                            if (data.lista != null) {
+                                $.each(data.lista, function (i, item) {
+
+                                    $("<option>").attr({ "value": item.IdCiudad }).text(item.Descripcion).appendTo("#cboCiudad")
+                                }),
+                                ListarBarrio();
+                            }
+                        },
+
+            });
+        }
+
+        //Cambio de seleccion en el desplegable de ciudad
+        $("#cboCiudad").on("change", function () {
+
+            ListarBarrio();
+
+        })
+
+
+        //LISTAR BARRIO EN DESPLEGABLE
+        function ListarBarrio() {
+
+            $("#cboBarrio").html("");
+
+            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cboBarrio");
+
+            jQuery.ajax({
+
+                        url: '@Url.Action("ObtenerBarrio", "Acceso")',
+                        type: "POST",
+                data: JSON.stringify({ idProvincia: $("#cboProvincia option:selected").val(), idCiudad: $("#cboCiudad option:selected").val() }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+
+                        success: function (data) {
+
+                            if (data.lista != null) {
+                                $.each(data.lista, function (i, item) {
+
+                                    $("<option>").attr({ "value": item.IdBarrio }).text(item.Descripcion).appendTo("#cboBarrio")
+                                })
+                            }
+                        },
+
+            });
+        }
+
+        // Overlay para container cuando presiono crear cuenta
+
+        function overlay() {
+            $("#btnCrearCuenta").click(function () {
+
+                //if (!$("#contenedor").valid()) {
+                //    return
+                //}
+
+                $("#contenedor").LoadingOverlay("show");
+
+                // Simulación de tiempo de carga (puedes reemplazarlo con tu lógica)
+                setTimeout(function () {
+                    $("#contenedor").LoadingOverlay("show");
+                }, 2000); // 2 segundos de simulación
+
+            });
+        };
+
+        // Validaciones de campos de texto
+
+        $("#contenedor").validate({
+            rules: {
+                txtCelular: {
+                    required: true
+                },
+                txtDireccion: {
+                    required: true
+                }
+               
+            },
+            messages: {
+                txtCelular: "- Campo de nombre es obligatorio",
+                txtDireccion: "- Campo de descripcion es obligatorio"
+                
+            },
+            errorElement: "div",
+            errorLabelContainer: ".alert-danger"
+        })
+
+    </script>
+
+}

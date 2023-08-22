@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CapaDominio
+{
+    public class Ciudad
+    {
+        public int IdCiudad { get; set; }
+        public int IdProvincia  { get; set; }
+        public string Descripcion { get; set; }
+    }
+}
