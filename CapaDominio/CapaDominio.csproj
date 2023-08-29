@@ -48,6 +48,7 @@
     <Compile Include="Cliente.cs" />
     <Compile Include="Dashboard.cs" />
     <Compile Include="DetalleVenta.cs" />
+    <Compile Include="Favorito.cs" />
     <Compile Include="Local.cs" />
     <Compile Include="Marca.cs" />
     <Compile Include="Producto.cs" />

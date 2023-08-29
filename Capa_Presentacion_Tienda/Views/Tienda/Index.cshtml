@@ -243,7 +243,7 @@
         $("#cboCiudad").on("change", function () {
 
             ListarBarrio();
-            
+
 
         })
 
@@ -289,7 +289,7 @@
          function mostrarLocales() {
 
             /*let idCategoria = $("input[name=categoria]:checked").val()*/
-         
+
             let idProvincia = $("#cboProvincia option:selected").val()
             let idCiudad = $("#cboCiudad option:selected").val()
             let idBarrio = $("#cboBarrio option:selected").val()
@@ -314,27 +314,9 @@
                          })
                      }
 
-                    @*   console.log("marcas ok");
-                    $("#contenedorMarca").html("") //Limpio el contenedor antes de llenarlo
-                    $("#contenedorMarca").LoadingOverlay("hide");
 
-                    $("<div>").addClass("form-check").append(
-                        $("<input>").addClass("form-check-input").attr({"type":"radio","name":"marca","value":"0","id":"mx", "checked":"checked"}),
-                        $("<label>").addClass("form-check-label").text("Todos").attr({"for":"mx"})
-                    ).appendTo("#contenedorMarca")
-
-                    $.each(response.data, function (i, element) {
-
-                        $("<div>").addClass("form-check").append(
-                            $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "marca", "value": element.IdMarca, "id": "m"+i }),
-                            $("<label>").addClass("form-check-label").text(element.Descripcion).attr({ "for": "m" + i  })
-                        ).appendTo("#contenedorMarca")
-
-                    })*@
                  },
-                 //beforeSend: function () {
-                 //    $("#cboLocales").LoadingOverlay("show");
-                 //}
+
              });
 
         }
@@ -359,23 +341,6 @@
                         })
                     }
 
-                    //$("#contenedorCategoria").LoadingOverlay("hide");
-
-                    //$("<div>").addClass("form-check").append(
-                    //    $("<input>").addClass("form-check-input").attr({ "type":"radio","name":"categoria","value":"0","id":"cx", "checked":"checked"}),
-                    //    $("<label>").addClass("form-check-label").text("Todos").attr({"for":"cx"})
-                    //).appendTo("#contenedorCategoria")
-
-                    //$.each(response.data, function (i, element) {
-
-                    //    $("<div>").addClass("form-check").append(
-                    //        $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "categoria", "value": element.IdCategoria, "id": "c"+i }),
-                    //        $("<label>").addClass("form-check-label").text(element.Descripcion).attr({ "for": "c" + i  })
-                    //    ).appendTo("#contenedorCategoria")
-
-                    //})
-                    //console.log("categorias ok");
-                  /*  mostrarMarcas()*/; //Cunado termine de cargar las categorias, ejecuta mostrar marcas
                 },
                 beforeSend: function () {
                     $("#contenedorCategoria").LoadingOverlay("show");
@@ -384,19 +349,7 @@
 
         }
 
-        //REFRESH MARCAS CUANDO CAMBIO RADIO BUTTON DE CATEGORIA
-        //$(document).on("change", "input[name = categoria]", function () {
-        //    mostrarMarcas();
-        //})
 
-        //$("#cboCategoria").on("change", function () {
-
-        //    mostrarMarcas();
-
-        //})
-
-
-        //LOGICA  MARCAS
 
 
 
@@ -440,10 +393,10 @@
 
                                     $("<div>").addClass("d-grid gap-1").append(
 
-                                            @*@if (Session["cliente"] != null)
-                                          {  //Trabajo con la clase agregarcarrito y con data de idProducto, esto me sirve para darle funcionalidad en el evento click
-                                              @: $("<button>").addClass("btn btn-success mt-auto m-1 agregarcarrito").data("idproducto", element.IdProducto).text("Agregar a carrito"),
-                                          }*@
+                                            @if (Session["cliente"] != null)
+                                            {  //Trabajo con la clase agregarfavorito y con data de idProducto, esto me sirve para darle funcionalidad en el evento click
+                                              @: $("<button>").addClass("btn btn-success mt-auto m-1 agregarfavorito").data("idproducto", element.IdProducto).text("Agregar a Favoritos"),
+                                          }
 
                                           $("<a>").addClass("btn btn-dark mt-auto m-1")
                                               .attr({ "href": "@Url.Action("DetalleProducto","Tienda")" + "?idProducto=" + element.IdProducto })
@@ -506,6 +459,47 @@
 
         //Test de ubicacion
 
+        //Agreagr a Favoritos
+          //BOTON DE AGREGA a favoritos
+        $(document).on("click", "button.agregarfavorito", function () {
+
+            console.log($(this).data("idproducto"))
+
+            jQuery.ajax({
+
+                        url: '@Url.Action("AgregarFavorito", "Tienda")',
+                        type: "POST",
+                        data: JSON.stringify({ idProducto: $(this).data("idproducto") }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            if (data.respuesta) {
+
+                                MostrarCantidadFavoritos(); //Este dato viene de Layout, como este index esta relacionado puede traer datos
+
+                                swal({
+                                    title: "Agregado al carrito",
+                                    text: "¿Desea ir al carrito?",
+                                    type: "success",
+                                    showCancelButton: true,
+                                    confirmButtonClass: "btn-primary",
+                                    confirmButtonText: "Si",
+                                    cancelButtonText: "No",
+                                    closeOnConfirm: true
+                                }, function () {
+
+                                    window.location.href = '@Url.Action("Favoritos","Tienda")'
+
+                                })
+
+                            } else {
+                                swal("", data.mensaje, "warning");
+                            }
+                        }
+
+            });
+        })
 
 
 

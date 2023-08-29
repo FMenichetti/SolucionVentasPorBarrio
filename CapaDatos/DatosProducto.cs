@@ -200,7 +200,7 @@ namespace CapaDatos
             return resultado;
         }
 
-        public bool EliminarProducto_sp(int id, out string mensaje)
+        public bool EliminarProducto_sp(int idProducto, out string mensaje)
         {
 
             bool resultado = false;
@@ -211,7 +211,7 @@ namespace CapaDatos
             {
 
                 datos.setearProcedimiento("sp_EliminarProducto");
-                datos.setearParametro("@IdProducto", id);
+                datos.setearParametro("@IdProducto", idProducto);
                 datos.comando().Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                 datos.comando().Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                 datos.comando().Connection = datos.conexion();
@@ -325,7 +325,7 @@ namespace CapaDatos
                 {
                     Producto Producto = new Producto();
                     Producto.IdProducto = int.Parse(datos.lector["IdProducto"].ToString());
-                    Producto.Nombre = datos.lector["Descripcion"].ToString();
+                    Producto.Nombre = datos.lector["Nombre"].ToString();
                     Producto.Descripcion = datos.lector["Descripcion"].ToString();
                     Producto.oMarca = new Marca();
                     //Producto.oMarca.IdMarca = Convert.ToInt32(datos.lector["IdMarcas"]);

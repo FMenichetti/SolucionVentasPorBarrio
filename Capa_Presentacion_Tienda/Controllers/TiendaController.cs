@@ -18,6 +18,14 @@ namespace Capa_Presentacion_Tienda.Controllers
         {
             return View();
         }
+        public ActionResult Favoritos()
+        {
+            return View();
+        }
+        public ActionResult Contacto()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             return View();
@@ -109,15 +117,7 @@ namespace Capa_Presentacion_Tienda.Controllers
             return jsonresult;
         }
 
-
-        [HttpGet]
-        public JsonResult CantidadEnCarrito()
-        {
-            int idCliente = ((Cliente)Session["cliente"]).IdCliente;
-            int cantidad = new NegocioCarrito().CantidadEnCarrito(idCliente);
-
-            return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
-        }
+       
         [HttpPost]
         public JsonResult ObtenerProvincia()
         {
@@ -146,6 +146,83 @@ namespace Capa_Presentacion_Tienda.Controllers
             return Json(new { lista = lista }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult ListarProductosFavoritos()
+        {
+            int idUsuario = ((Usuario)Session["cliente"]).IdUsuario;
+            List<Favorito> lista = new List<Favorito>();
+
+            bool conversion;
+
+            lista = new NegocioFavorito().ListarProductoFavorito(idUsuario).Select(oc => new Favorito()
+            {
+
+                oProducto = new Producto()
+                {
+
+                    IdProducto = oc.oProducto.IdProducto,
+                    Nombre = oc.oProducto.Nombre,
+                    Descripcion = oc.oProducto.Descripcion,
+                    oMarca = oc.oProducto.oMarca,
+                    Precio = oc.oProducto.Precio,
+                    UrlImagen = oc.oProducto.UrlImagen,
+                    base64 = NegocioRecursos.ConvertirBase64(Path.Combine(oc.oProducto.UrlImagen, oc.oProducto.NombreImagen), out conversion),
+                    extension = Path.GetExtension(oc.oProducto.NombreImagen)
+                }
+
+
+            }).ToList();
+
+            return Json(new { data = lista }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult EliminarFavorito(int idProducto)
+        {
+            int idUsuario = ((Usuario)Session["cliente"]).IdUsuario;
+
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new NegocioFavorito().EliminarFavorito(idUsuario, idProducto);
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult AgregarFavorito (int idProducto)
+        {
+            int idUsuario = ((Usuario)Session["cliente"]).IdUsuario;
+
+            bool existe = new NegocioFavorito().ExisteFavorito(idUsuario, idProducto);
+
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            if (existe)
+            {
+                mensaje = "El producto ya existe en favoritos";
+            }
+            else
+            {
+                respuesta = new NegocioFavorito().AgregarFavorito(idUsuario, idProducto, out mensaje);
+            }
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult CantidadFavoritos()
+        {
+            int idUsuario = ((Usuario)Session["cliente"]).IdUsuario;
+            int cantidad = new NegocioFavorito().CantidadEnFavorito(idUsuario);
+
+            return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //Vista carrito
         //public ActionResult Carrito()
         //{
         //    return View();
@@ -191,7 +268,7 @@ namespace Capa_Presentacion_Tienda.Controllers
         //    string mensaje = string.Empty;
 
         //    respuesta = new NegocioCarrito().OperacionCarrito(idCliente, idProducto, true, out mensaje);
-           
+
         //    return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         //}
         //[HttpPost]
@@ -226,6 +303,16 @@ namespace Capa_Presentacion_Tienda.Controllers
         //        respuesta = new NegocioCarrito().OperacionCarrito(idCliente, idProducto, true, out mensaje);
         //    }
         //    return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        //}
+
+        // Cantidad en carrito
+        //[HttpGet]
+        //public JsonResult CantidadEnCarrito()
+        //{
+        //    int idCliente = ((Cliente)Session["cliente"]).IdCliente;
+        //    int cantidad = new NegocioCarrito().CantidadEnCarrito(idCliente);
+
+        //    return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
         //}
     }
 }

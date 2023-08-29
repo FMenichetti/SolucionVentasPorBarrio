@@ -357,14 +357,19 @@ namespace Capa_Presentacion_Tienda.Controllers
         }
 
         [HttpPost]
-        public JsonResult EliminarProducto(int id)
+        public JsonResult EliminarProducto(int idProducto)
         {
             object resultado;
+            object resultado2;
             string mensaje = string.Empty;
             try
             {
-                resultado = new NegocioProducto().EliminarProducto_sp(id, out mensaje);
-
+                resultado = new NegocioProducto().EliminarProducto_sp(idProducto, out mensaje);
+                 if (resultado !=null)
+                {
+                    int idUsuario = ((Usuario)Session["cliente"]).IdUsuario;
+                    resultado2 = new NegocioFavorito().EliminarFavoritoConIdProducto( idProducto);
+                };
             }
             catch (Exception ex)
             {

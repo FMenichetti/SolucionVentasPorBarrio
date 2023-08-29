@@ -47,6 +47,7 @@
     <Compile Include="DatosCategoria.cs" />
     <Compile Include="DatosCliente.cs" />
     <Compile Include="DatosDashboard.cs" />
+    <Compile Include="DatosFavorito.cs" />
     <Compile Include="DatosMarca.cs" />
     <Compile Include="DatosProducto.cs" />
     <Compile Include="DatosTienda.cs" />

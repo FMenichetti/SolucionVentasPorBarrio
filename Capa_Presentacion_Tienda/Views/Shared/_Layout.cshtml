@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - </title>
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
@@ -20,8 +20,10 @@
                     @if (Session["cliente"] != null)
                     {
                         <li class="nav-item"><a class="nav-link active navbar-brand" aria-current="page" href="@Url.Action("Producto", "Tienda")">Productos</a></li>
+                       // <li class="nav-item"><a class="nav-link active navbar-brand" aria-current="page" href="@Url.Action("Producto", "Tienda")">Contacto</a></li>
                     }
-                    </ul>
+                </ul>
+
                 <form class="d-flex">
 
                     @if (Session["cliente"] == null)
@@ -30,11 +32,11 @@
                     }
                     else
                     {
-                        @*<a class="btn btn-outline-dark" href="@Url.Action("Carrito","Tienda")">
+                        <a class="btn btn-outline-dark" href="@Url.Action("Favoritos","Tienda")">
                             <i class="fas fa-shopping-cart me-1"></i>
-                            Carrito
-                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="cantidadCarrito">0</span>
-                        </a>*@
+                            Favoritos
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="cantidadFavorito">0</span>
+                        </a>
 
                         <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
                             <li class="nav-item dropdown">
@@ -57,7 +59,7 @@
         @RenderBody()
    
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - </p>
         </footer>
 
     @Scripts.Render("~/bundles/jquery")
@@ -69,12 +71,12 @@
 
     $(document).ready(function () {
 
-        MostrarCantidadCarrito();
+        MostrarCantidadFavoritos();
     })
 
 
 
-    function MostrarCantidadCarrito() {
+   @* function MostrarCantidadCarrito() {
 
         if ($("#cantidadCarrito").length > 0) {
             jQuery.ajax({
@@ -93,8 +95,29 @@
                         }
                     });
         }
-    }
+    }*@
 
+    //Cantidad Favoritos
+      function MostrarCantidadFavoritos() {
+
+          if ($("#cantidadFavorito").length > 0) {
+            jQuery.ajax({
+
+                        url: '@Url.Action("CantidadFavoritos", "Tienda")',
+                        type: "Get",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+
+                        success: function (data) {
+                            $("#cantidadFavorito").text(data.cantidad)
+                        },
+
+                        error: function (error) {
+                            swal("Error, no se pudo eliminar el usuario");
+                        }
+                    });
+        }
+    }
 
 </script>
 </body>
